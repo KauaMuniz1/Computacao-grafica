@@ -7,6 +7,10 @@
 
 void display(); 
 void reshape(int, int);
+void timer(int);
+float x_position = -10.0;
+int state = 1;
+
 
 void init(){
     //define a cor de limpeza da tela, parametros: (vermelho, verde, azul, alpha)
@@ -26,9 +30,10 @@ void display(){
     //draw
     glBegin(GL_POLYGON);
 
-    glVertex2f(0.0, 5.0);
-    glVertex2f(4.0, -3.0);
-    glVertex2f(-4.0, -3.0);
+    glVertex2f(x_position, 1.0);
+    glVertex2f(x_position, -1.0);
+    glVertex2f(x_position + 2.0, -1.0);
+    glVertex2f(x_position + 2.0, 1.0);
 
     //
     glEnd();
@@ -47,6 +52,36 @@ void reshape(int w, int h){
     gluOrtho2D(-10,10,-10,10);
     glMatrixMode(GL_MODELVIEW);
    
+}
+
+void timer(int){ 
+
+    //glutPostRedisplay() avisa o glut que a janela precisa ser redesenhada, o que faz ele chamar display()na proxima iteração do loop
+    glutPostRedisplay();
+
+    //Re-registra o timer para chamar a mesma função depois de -16ms, criando um loop de animação de aproximadamente 60 fps
+    glutTimerFunc(1000/60, timer, 0);
+
+    //verifica o estado atual (1 = indo pra direita, -1 = indo pra esquerda)
+    switch(state){
+        case 1:
+            if(x_position < 8 ){
+                x_position += 0.30;
+            }
+            else{
+                state = - 1; //bateu no limite ai inverte a direção
+            }break;
+        
+        case -1:
+            if(x_position >- 10){
+                x_position -= 0.30;
+            }
+            else{
+                state = 1;
+            }
+            break;
+    }
+
 }
 
 int main(int argc, char**argv){
@@ -76,7 +111,8 @@ int main(int argc, char**argv){
     glutDisplayFunc(display);
     
     glutReshapeFunc(reshape);
-
+    
+    glutTimerFunc(1000, timer, 0);
     init();
     //inicia o loop principal do GLUT(fica rodando até o programa fechar)
     glutMainLoop();
