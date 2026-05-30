@@ -15,6 +15,7 @@ int state = 1;
 void init(){
     //define a cor de limpeza da tela, parametros: (vermelho, verde, azul, alpha)
     glClearColor(0.0, 0.0, 0.0, 1.0);
+
 }
 
 
@@ -27,13 +28,16 @@ void display(){
     //Reseta a matriz de transformação atual para a identidade
     glLoadIdentity();
 
+    glTranslatef(x_position, 0 ,0);
+
     //draw
     glBegin(GL_POLYGON);
+    glColor3f(1,0,1);
 
-    glVertex2f(x_position, 1.0);
-    glVertex2f(x_position, -1.0);
-    glVertex2f(x_position + 2.0, -1.0);
-    glVertex2f(x_position + 2.0, 1.0);
+    glVertex2f(-1, 1.0);
+    glVertex2f(-1, -1.0);
+    glVertex2f(1, -1.0);
+    glVertex2f(1, 1.0);
 
     //
     glEnd();
@@ -65,7 +69,7 @@ void timer(int){
     //verifica o estado atual (1 = indo pra direita, -1 = indo pra esquerda)
     switch(state){
         case 1:
-            if(x_position < 8 ){
+            if(x_position < 9 ){
                 x_position += 0.30;
             }
             else{
@@ -73,7 +77,7 @@ void timer(int){
             }break;
         
         case -1:
-            if(x_position >- 10){
+            if(x_position >- 9){
                 x_position -= 0.30;
             }
             else{
