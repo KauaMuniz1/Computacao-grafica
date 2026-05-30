@@ -54,6 +54,7 @@ void reshape(int w, int h){
    
 }
 
+
 void timer(int){ 
 
     //glutPostRedisplay() avisa o glut que a janela precisa ser redesenhada, o que faz ele chamar display()na proxima iteração do loop
