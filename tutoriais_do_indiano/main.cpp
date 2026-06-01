@@ -8,13 +8,14 @@
 void display(); 
 void reshape(int, int);
 void timer(int);
-float x_position = -10.0;
-int state = 1;
+float angle = 0.0;
 
 
 void init(){
     //define a cor de limpeza da tela, parametros: (vermelho, verde, azul, alpha)
     glClearColor(0.0, 0.0, 0.0, 1.0);
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 
@@ -22,20 +23,60 @@ void init(){
 void display(){
 
     //Limpa o buffer de cor, pintando a tela com a cor já definida no glClearColor
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Reseta a matriz de transformação atual para a identidade
     glLoadIdentity();
 
-    glTranslatef(0,0, x_position);
+    glTranslatef(0,0, -8);
+    glRotatef(angle, 1,0,0);
+    glRotatef(angle, 0, 1, 0);
+    glRotatef(angle, 0, 0, 1);
 
-    //draw
-    glBegin(GL_POLYGON);
-    glColor3f(1,0,1);
-    glVertex3f(-1, 1.0, 0.0);
-    glVertex3f(-1, -1.0, 0.0);
-    glVertex3f(1, -1.0, 0.0);
-    glVertex3f(1, 1.0, 0.0);
+    //Desenhando um cubo
+    glBegin(GL_QUADS);
+
+    //front
+    glColor3f(1,0,0);
+    glVertex3f(-1.0, 1.0, 1.0);
+    glVertex3f(-1.0, -1.0, 1.0);
+    glVertex3f(1.0, -1.0, 1.0);
+    glVertex3f(1.0, 1.0, 1.0); //todos os z's vao ser iguais a 1
+    
+    //back
+    glColor3f(0.0,1.0,0.0);
+    glVertex3f(1.0,1.0,-1.0);
+    glVertex3f(1.0,-1.0,-1.0);
+    glVertex3f(-1.0,-1.0,-1.0);
+    glVertex3f(-1.0,1.0,-1.0); //todos os z's vao ser iguais a -1
+
+    //right
+    glColor3f(0.0,0.0,1.0);
+    glVertex3f(1.0, 1.0, 1.0);
+    glVertex3f(1.0, -1.0, 1.0);
+    glVertex3f(1.0, -1.0, -1.0);
+    glVertex3f(1.0, 1.0, -1.0); //um z vai estar a -1
+
+    //left
+    glColor3f(1.0,1.0,0.0);
+    glVertex3f(-1.0,1.0,-1.0);
+    glVertex3f(-1.0,-1.0,-1.0);
+    glVertex3f(-1.0,-1.0,1.0);
+    glVertex3f(-1.0,1.0,1.0); //mesma ideia da de cima
+
+    //top
+    glColor3f(0.0,1.0,1.0);
+    glVertex3f(-1.0,1.0,-1.0);
+    glVertex3f(-1.0,1.0,1.0);
+    glVertex3f(1.0,1.0,1.0);
+    glVertex3f(1.0,1.0,-1.0); //vai haver 2 z's negativos
+
+    //bottom
+    glColor3f(1.0,0.0,1.0);
+    glVertex3f(-1.0,-1.0,-1.0);
+    glVertex3f(-1.0,-1.0,1.0);
+    glVertex3f(1.0,-1.0,1.0);
+    glVertex3f(1.0,-1.0,-1.0); //aqui também há 2 z's negativos 
 
     //
     glEnd();
@@ -67,23 +108,9 @@ void timer(int){
 
     //verifica o estado atual (1 = indo pra direita, -1 = indo pra esquerda)
     
-    switch(state){
-        case 1:
-            if(x_position < -5 ){
-                x_position += 0.30;
-            }
-            else{
-                state = - 1; //bateu no limite ai inverte a direção
-            }break;
-        
-        case -1:
-            if(x_position >- 15){
-                x_position -= 0.30;
-            }
-            else{
-                state = 1;
-            }
-            break;
+    angle += 0.8 * 2;
+    if(angle > 360.0){
+        angle = angle - 360;
     }
 
 }
@@ -96,7 +123,7 @@ int main(int argc, char**argv){
     GLUT_RGB: cores no formato rgb
     GLUT_DOUBLE: usa dois buffers
     */
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 
 
     //Define a posição inicial da janela na tela usando escala x y (x = 200, y = 100, em pixels)
