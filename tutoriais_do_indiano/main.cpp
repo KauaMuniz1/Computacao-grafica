@@ -27,13 +27,15 @@ void display(){
     //Reseta a matriz de transformação atual para a identidade
     glLoadIdentity();
 
+    glTranslatef(0,0, x_position);
+
     //draw
     glBegin(GL_POLYGON);
-
-    glVertex2f(x_position, 1.0);
-    glVertex2f(x_position, -1.0);
-    glVertex2f(x_position + 2.0, -1.0);
-    glVertex2f(x_position + 2.0, 1.0);
+    glColor3f(1,0,1);
+    glVertex3f(-1, 1.0, 0.0);
+    glVertex3f(-1, -1.0, 0.0);
+    glVertex3f(1, -1.0, 0.0);
+    glVertex3f(1, 1.0, 0.0);
 
     //
     glEnd();
@@ -49,7 +51,7 @@ void reshape(int w, int h){
     glLoadIdentity();
 
     //define uma projeção ortográfica 2D, e os parametros definem os limites do mundo
-    gluOrtho2D(-10,10,-10,10);
+    gluPerspective(60, 1, 2.0, 50.0);
     glMatrixMode(GL_MODELVIEW);
    
 }
@@ -64,9 +66,10 @@ void timer(int){
     glutTimerFunc(1000/60, timer, 0);
 
     //verifica o estado atual (1 = indo pra direita, -1 = indo pra esquerda)
+    
     switch(state){
         case 1:
-            if(x_position < 8 ){
+            if(x_position < -5 ){
                 x_position += 0.30;
             }
             else{
@@ -74,7 +77,7 @@ void timer(int){
             }break;
         
         case -1:
-            if(x_position >- 10){
+            if(x_position >- 15){
                 x_position -= 0.30;
             }
             else{
