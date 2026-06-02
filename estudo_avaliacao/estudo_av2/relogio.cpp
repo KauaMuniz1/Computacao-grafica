@@ -56,12 +56,15 @@ void display(void) {
     glRotatef(90, 1, 0, 0);
     glColor3f(0.2f, 0.2f, 0.2f);
     glutSolidTorus(1, 30, 30, 100);
+    glPopMatrix();
+}
 
   glPushMatrix();
   {
-    glRotatef(hourAngle, 0, 0, -1);
-    glColor3f(0, 0, 1);
+    glRotatef(hourAngle, 0, 1, 0);
     glTranslatef(8,0,0);
+
+    glColor3f(0, 0, 1);
 
     glScalef(16, 1, 1);
 
@@ -71,9 +74,10 @@ void display(void) {
 
   glPushMatrix();
   {
-    glRotatef(minuteAngle, 0, 0, -1);
-    glColor3f(0, 1, 0);
+    glRotatef(minuteAngle, 0, 1, 0);
     glTranslatef(12, 0, 0);
+
+    glColor3f(0, 1, 0);
 
 
     glScalef(24, 1, 1);
@@ -83,7 +87,7 @@ void display(void) {
 
   glPushMatrix();
   {
-    glRotatef(secondAngle, 0, 0, -1);
+    glRotatef(secondAngle, 0, 1, 0);
     glTranslatef(25, 0, 0);
 
     glColor3f(1, 0, 0);
@@ -93,8 +97,7 @@ void display(void) {
 
     glutSolidCube(1);
   }
-  glPopMatrix();
-}
+  
   glPopMatrix();
   glutSwapBuffers();
 }
