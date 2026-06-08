@@ -50,7 +50,7 @@ void display(void) {
   }
   glEnd();  // Encerra a criação de pontos
 
-  glFlush();  // Informa que as operações devem ser processadas imediatamente e
+  glutSwapBuffers();  // Informa que as operações devem ser processadas imediatamente e
               // exibidas na tela
 }
 
@@ -82,7 +82,7 @@ void keyboard(unsigned char key, int x, int y) {
 int main(int argc, char *argv[]) {
   glutInit(&argc, argv);  // Inicializa a OpenGL
   glutInitDisplayMode(
-      GLUT_SINGLE |
+      GLUT_DOUBLE |
       GLUT_RGB);  // Configura os modos de exibição (mais detalhes no futuro)
   glutInitWindowSize(500, 500);  // Define o tamanho da janela em pixels
   glutInitWindowPosition(0, 0);  // Define a posição inicial da janela
